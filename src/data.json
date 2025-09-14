@@ -1,0 +1,34 @@
+{
+  "poraba": [
+    { "name": "Janez", "value": 30 },
+    { "name": "Maja", "value": 45 },
+    { "name": "Tina", "value": 25 }
+  ],
+  "proizvodnja": [
+    { "name": "Sončna elektrarna", "kWh": 120 },
+    { "name": "Vetrnica", "kWh": 80 },
+    { "name": "Shramba", "kWh": 40 }
+  ],
+  "clani": [
+    { "id": 1, "ime": "Janez Novak", "delez": "30%" },
+    { "id": 2, "ime": "Maja Kovač", "delez": "45%" },
+    { "id": 3, "ime": "Tina Zupan", "delez": "25%" }
+  ],
+  "glasovanja": [
+    {
+      "id": 1,
+      "predlog": "Ali podprete investicijo v novo sončno elektrarno?",
+      "status": "odprto"
+    },
+    {
+      "id": 2,
+      "predlog": "Uvedba skupne shrambe energije",
+      "status": "zaključeno"
+    }
+  ],
+  "obvestila": [
+    "Naslednji sestanek: 15. marec 2025",
+    "Nova sončna elektrarna je začela obratovati",
+    "Obvestilo: odprto glasovanje o novi investiciji"
+  ]
+}

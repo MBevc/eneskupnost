@@ -1,4 +1,5 @@
 import { useState } from "react";
+import data from "./data.json";
 import {
   PieChart,
   Pie,
@@ -15,20 +16,6 @@ import { Users, Bell, CheckSquare } from "lucide-react";
 export default function EnergetskaSkupnostApp() {
   const [activeTab, setActiveTab] = useState("pregled");
 
-  // Mock podatki
-  const porabaData = [
-    { name: "Janez", value: 30 },
-    { name: "Maja", value: 45 },
-    { name: "Tina", value: 25 },
-  ];
-
-  const proizvodnjaData = [
-    { name: "Sončna elektrarna", kWh: 120 },
-    { name: "Vetrnica", kWh: 80 },
-    { name: "Shramba", kWh: 40 },
-  ];
-
-  // Barve za PieChart
   const COLORS = ["#60a5fa", "#34d399", "#fbbf24"];
 
   return (
@@ -64,7 +51,6 @@ export default function EnergetskaSkupnostApp() {
 
       {/* Vsebina zavihkov */}
       <main className="p-6">
-        {/* Pregled */}
         {activeTab === "pregled" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white p-4 rounded shadow">
@@ -72,13 +58,13 @@ export default function EnergetskaSkupnostApp() {
               <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
                   <Pie
-                    data={porabaData}
+                    data={data.poraba}
                     dataKey="value"
                     nameKey="name"
                     outerRadius={100}
                     label
                   >
-                    {porabaData.map((entry, index) => (
+                    {data.poraba.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index]} />
                     ))}
                   </Pie>
@@ -90,7 +76,7 @@ export default function EnergetskaSkupnostApp() {
             <div className="bg-white p-4 rounded shadow">
               <h2 className="text-lg font-semibold mb-2">Proizvodnja energije</h2>
               <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={proizvodnjaData}>
+                <BarChart data={data.proizvodnja}>
                   <XAxis dataKey="name" />
                   <YAxis />
                   <Tooltip />
@@ -101,16 +87,17 @@ export default function EnergetskaSkupnostApp() {
           </div>
         )}
 
-        {/* Člani */}
         {activeTab === "clani" && (
           <div className="bg-white p-4 rounded shadow">
             <h2 className="text-lg font-semibold flex items-center gap-2 mb-4">
               <Users size={20} /> Člani skupnosti
             </h2>
-            <ul className="list-disc pl-6">
-              <li>Janez Novak</li>
-              <li>Maja Kovač</li>
-              <li>Tina Zupan</li>
+            <ul className="space-y-2">
+              {data.clani.map((clan) => (
+                <li key={clan.id}>
+                  {clan.ime} – delež: {clan.delez}
+                </li>
+              ))}
             </ul>
             <button className="mt-4 px-3 py-2 bg-blue-500 text-white rounded">
               Dodaj člana
@@ -118,27 +105,40 @@ export default function EnergetskaSkupnostApp() {
           </div>
         )}
 
-        {/* Glasovanje */}
         {activeTab === "glasovanje" && (
-          <div className="bg-white p-4 rounded shadow">
+          <div className="bg-white p-4 rounded shadow space-y-4">
             <h2 className="text-lg font-semibold flex items-center gap-2 mb-4">
               <CheckSquare size={20} /> Glasovanje
             </h2>
-            <p className="mb-2">Ali podprete investicijo v novo sončno elektrarno?</p>
-            <button className="px-3 py-2 bg-green-500 text-white rounded mr-2">DA</button>
-            <button className="px-3 py-2 bg-red-500 text-white rounded">NE</button>
+            {data.glasovanja.map((glas) => (
+              <div key={glas.id} className="border p-3 rounded">
+                <p className="mb-2">{glas.predlog}</p>
+                {glas.status === "odprto" ? (
+                  <div>
+                    <button className="px-3 py-2 bg-green-500 text-white rounded mr-2">
+                      DA
+                    </button>
+                    <button className="px-3 py-2 bg-red-500 text-white rounded">
+                      NE
+                    </button>
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500">Glasovanje zaključeno</p>
+                )}
+              </div>
+            ))}
           </div>
         )}
 
-        {/* Obvestila */}
         {activeTab === "obvestila" && (
           <div className="bg-white p-4 rounded shadow">
             <h2 className="text-lg font-semibold flex items-center gap-2 mb-4">
               <Bell size={20} /> Obvestila
             </h2>
-            <ul className="list-disc pl-6">
-              <li>Naslednji sestanek: 15. marec 2025</li>
-              <li>Nova sončna elektrarna je začela obratovati</li>
+            <ul className="list-disc pl-6 space-y-1">
+              {data.obvestila.map((o, index) => (
+                <li key={index}>{o}</li>
+              ))}
             </ul>
           </div>
         )}
