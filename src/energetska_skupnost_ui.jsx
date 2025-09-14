@@ -1,108 +1,96 @@
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { Users, Bell, FilePlus, Vote } from "lucide-react";
-
-const data = [
-  { name: "Jan", poraba: 240, proizvodnja: 300 },
-  { name: "Feb", poraba: 220, proizvodnja: 280 },
-  { name: "Mar", poraba: 260, proizvodnja: 310 },
-];
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { Users, Bell, CheckSquare } from "lucide-react";
 
 export default function EnergetskaSkupnostApp() {
+  // Mock podatki
+  const porabaData = [
+    { name: "Janez", value: 30 },
+    { name: "Maja", value: 45 },
+    { name: "Tina", value: 25 },
+  ];
+
+  const proizvodnjaData = [
+    { name: "Sončna elektrarna", kWh: 120 },
+    { name: "Vetrnica", kWh: 80 },
+    { name: "Shramba", kWh: 40 },
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <header className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Skupnost Energije</h1>
-        <Button variant="outline" className="flex gap-2"><Bell size={18}/> Obvestila</Button>
-      </header>
+    <div className="p-6 bg-gray-100 min-h-screen">
+      {/* Naslov */}
+      <h1 className="text-2xl font-bold mb-6">Energetska skupnost – Dashboard</h1>
 
-      <Tabs defaultValue="dashboard">
-        <TabsList className="grid grid-cols-5 w-full mb-6">
-          <TabsTrigger value="dashboard">Pregled</TabsTrigger>
-          <TabsTrigger value="clani">Člani</TabsTrigger>
-          <TabsTrigger value="delezi">Deleži in prihranki</TabsTrigger>
-          <TabsTrigger value="glasovanje">Glasovanje</TabsTrigger>
-          <TabsTrigger value="pridruzitev">Pridružitev</TabsTrigger>
-        </TabsList>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Poraba energije */}
+        <div className="bg-white p-4 rounded-xl shadow">
+          <h2 className="text-lg font-semibold mb-2">Poraba članov</h2>
+          <ResponsiveContainer width="100%" height={250}>
+            <PieChart>
+              <Pie
+                data={porabaData}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={100}
+                label
+              >
+                <Cell fill="#60a5fa" />
+                <Cell fill="#34d399" />
+                <Cell fill="#fbbf24" />
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
 
-        {/* Dashboard */}
-        <TabsContent value="dashboard">
-          <Card className="mb-6">
-            <CardHeader className="font-semibold">Poraba in proizvodnja energije</CardHeader>
-            <CardContent className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data}>
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="poraba" fill="#f87171" name="Poraba" />
-                  <Bar dataKey="proizvodnja" fill="#34d399" name="Proizvodnja" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </TabsContent>
+        {/* Proizvodnja energije */}
+        <div className="bg-white p-4 rounded-xl shadow">
+          <h2 className="text-lg font-semibold mb-2">Proizvodnja energije</h2>
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={proizvodnjaData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="kWh" fill="#4ade80" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
 
-        {/* Člani */}
-        <TabsContent value="clani">
-          <Card>
-            <CardHeader className="font-semibold flex items-center gap-2"><Users size={18}/> Člani skupnosti</CardHeader>
-            <CardContent>
-              <ul className="space-y-2">
-                <li>📍 Ana Novak – 15 % delež</li>
-                <li>📍 Marko Kovač – 10 % delež</li>
-                <li>📍 Petra Horvat – 8 % delež</li>
-              </ul>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Deleži */}
-        <TabsContent value="delezi">
-          <Card>
-            <CardHeader className="font-semibold">Deleži in prihranki</CardHeader>
-            <CardContent>
-              <p>Ana Novak</p>
-              <Progress value={15} className="mb-2" />
-              <p>Marko Kovač</p>
-              <Progress value={10} className="mb-2" />
-              <p>Petra Horvat</p>
-              <Progress value={8} />
-            </CardContent>
-          </Card>
-        </TabsContent>
+        {/* Člani skupnosti */}
+        <div className="bg-white p-4 rounded-xl shadow">
+          <h2 className="text-lg font-semibold flex items-center gap-2 mb-2">
+            <Users size={20} /> Člani skupnosti
+          </h2>
+          <ul className="list-disc pl-6">
+            <li>Janez Novak</li>
+            <li>Maja Kovač</li>
+            <li>Tina Zupan</li>
+          </ul>
+          <button className="mt-4 px-3 py-2 bg-blue-500 text-white rounded">
+            Dodaj člana
+          </button>
+        </div>
 
         {/* Glasovanje */}
-        <TabsContent value="glasovanje">
-          <Card>
-            <CardHeader className="font-semibold flex gap-2 items-center"><Vote size={18}/> Glasovanje</CardHeader>
-            <CardContent>
-              <p className="mb-4">Predlog: Namestitev dodatnih sončnih panelov</p>
-              <div className="flex gap-4">
-                <Button variant="default">ZA</Button>
-                <Button variant="destructive">PROTI</Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+        <div className="bg-white p-4 rounded-xl shadow">
+          <h2 className="text-lg font-semibold flex items-center gap-2 mb-2">
+            <CheckSquare size={20} /> Glasovanje
+          </h2>
+          <p className="mb-2">Ali podprete investicijo v novo sončno elektrarno?</p>
+          <button className="px-3 py-2 bg-green-500 text-white rounded mr-2">DA</button>
+          <button className="px-3 py-2 bg-red-500 text-white rounded">NE</button>
+        </div>
 
-        {/* Pridružitev */}
-        <TabsContent value="pridruzitev">
-          <Card>
-            <CardHeader className="font-semibold flex gap-2 items-center"><FilePlus size={18}/> Pridružitev skupnosti</CardHeader>
-            <CardContent className="space-y-4">
-              <input type="text" placeholder="Ime in priimek" className="w-full border p-2 rounded" />
-              <input type="email" placeholder="Email" className="w-full border p-2 rounded" />
-              <input type="number" placeholder="Predlagani delež (%)" className="w-full border p-2 rounded" />
-              <Button variant="default">Pošlji prijavo</Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-      </Tabs>
+        {/* Obvestila */}
+        <div className="bg-white p-4 rounded-xl shadow md:col-span-2">
+          <h2 className="text-lg font-semibold flex items-center gap-2 mb-2">
+            <Bell size={20} /> Obvestila
+          </h2>
+          <ul className="list-disc pl-6">
+            <li>Naslednji sestanek: 15. marec 2025</li>
+            <li>Nova sončna elektrarna je začela obratovati</li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
