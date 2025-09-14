@@ -107,3 +107,27 @@ button.danger {
 button + button {
   margin-left: 8px;
 }
+
+/* Header z logotipom */
+header img.logo {
+  height: 32px;
+  margin-right: 12px;
+  vertical-align: middle;
+}
+
+/* Layout za pregled */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Na večjih zaslonih: vodoravno */
+@media (min-width: 768px) {
+  .grid {
+    flex-direction: row;
+  }
+  .grid .card {
+    flex: 1;
+  }
+}

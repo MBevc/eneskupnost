@@ -19,10 +19,13 @@ export default function EnergetskaSkupnostApp() {
   const COLORS = ["#60a5fa", "#34d399", "#fbbf24"];
 
   return (
-    <div>
-      {/* Header */}
+     <div>
+      {/* Header z logotipom */}
       <header>
-        <h1>Energetska skupnost</h1>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img src="/favicon.png" alt="Logo" className="logo" />
+          <h1>Energetska skupnost</h1>
+        </div>
         <div>
           <Bell />
           <Users />
