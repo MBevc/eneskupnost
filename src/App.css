@@ -133,3 +133,19 @@ header img.logo {
     flex: 1;
   }
 }
+
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.slider-panel {
+  flex: 1;
+  min-width: 200px;
+  background: #f9fafb;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
