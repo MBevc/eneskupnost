@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import data from "./data.json";
 import {
   PieChart,
@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Users, Bell, AlertTriangle, Check, X } from "lucide-react";
+import EnergySurvey from "./EnergySurvey";
 import "./App.css";
 
 export default function EnergetskaSkupnostApp() {
@@ -22,6 +23,34 @@ export default function EnergetskaSkupnostApp() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [hasRecommendations, setHasRecommendations] = useState(true);
+  const [pripMode, setPripMode] = useState(null); // "anketa" | "vmesnik" | null
+
+  const notifRef = useRef(null);
+  const userMenuRef = useRef(null);
+
+  // Close menus on outside click or ESC
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
+        setIsNotifOpen(false);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    const handleKeydown = (event) => {
+      if (event.key === "Escape") {
+        setIsNotifOpen(false);
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeydown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeydown);
+    };
+  }, []);
 
   const avgPoraba =
     data.poraba.reduce((sum, p) => sum + p.value, 0) / data.poraba.length;
@@ -78,7 +107,7 @@ export default function EnergetskaSkupnostApp() {
           <h1>Energetska skupnost</h1>
         </div>
         <div className="header-actions">
-          <div className="notif-wrapper">
+          <div className="notif-wrapper" ref={notifRef}>
             <button
               className="icon-button"
               aria-haspopup="menu"
@@ -99,6 +128,7 @@ export default function EnergetskaSkupnostApp() {
                   role="menuitem"
                   onClick={() => {
                     setActiveTab("priporocila");
+                    setPripMode(null);
                     setIsNotifOpen(false);
                     setHasRecommendations(false);
                   }}
@@ -108,7 +138,7 @@ export default function EnergetskaSkupnostApp() {
               </div>
             )}
           </div>
-          <div className="user-menu-wrapper">
+          <div className="user-menu-wrapper" ref={userMenuRef}>
             <button
               className="icon-button"
               aria-haspopup="menu"
@@ -364,13 +394,37 @@ export default function EnergetskaSkupnostApp() {
         {activeTab === "priporocila" && (
           <div className="card">
             <h2>Priporočila</h2>
-            <p style={{ margin: "8px 0 16px", color: "#374151" }}>
-              Izberite način, s katerim želite prejeti priporočila.
-            </p>
-            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-              <button className="option-tile">Vodena anketa</button>
-              <button className="option-tile">Prilagojen vmesnik</button>
-            </div>
+            {!pripMode && (
+              <>
+                <p style={{ margin: "8px 0 16px", color: "#374151" }}>
+                  Izberite način, s katerim želite prejeti priporočila.
+                </p>
+                <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                  <button className="option-tile" onClick={() => setPripMode("anketa")}>
+                    Vodena anketa
+                  </button>
+                  <button className="option-tile" onClick={() => setPripMode("vmesnik")}>
+                    Prilagojen vmesnik
+                  </button>
+                </div>
+              </>
+            )}
+            {pripMode === "anketa" && (
+              <div style={{ marginTop: "12px" }}>
+                <EnergySurvey />
+                <div style={{ marginTop: "12px" }}>
+                  <button onClick={() => setPripMode(null)} className="vote-btn neutral">Nazaj na izbiro</button>
+                </div>
+              </div>
+            )}
+            {pripMode === "vmesnik" && (
+              <div style={{ marginTop: "12px", color: "#374151" }}>
+                Prilagojen vmesnik bo na voljo kmalu.
+                <div style={{ marginTop: "12px" }}>
+                  <button onClick={() => setPripMode(null)} className="vote-btn neutral">Nazaj na izbiro</button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </main>

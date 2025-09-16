@@ -232,6 +232,27 @@ header img.logo {
   background: #f3f4f6;
 }
 
+/* Survey styles */
+.survey {
+  padding: 16px;
+  max-width: 520px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-radius: 8px;
+}
+.survey-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+.survey-input {
+  border: 1px solid #e5e7eb;
+  padding: 8px;
+  width: 100%;
+  border-radius: 6px;
+}
+.survey-actions { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; }
+.survey-btn { background: #e5e7eb; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+.survey-btn.primary { background: #3b82f6; color: white; }
+.survey-btn.success { background: #10b981; color: white; }
+.survey-check { display: block; margin: 6px 0; }
+
 /* Layout za pregled */
 .grid {
   display: flex;
