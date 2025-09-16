@@ -19,6 +19,7 @@ export default function EnergetskaSkupnostApp() {
   const [porabaMultiplier, setPorabaMultiplier] = useState(1.2);
   const [maxDelez, setMaxDelez] = useState(30);
   const [openMsg, setOpenMsg] = useState(null);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const avgPoraba =
     data.poraba.reduce((sum, p) => sum + p.value, 0) / data.poraba.length;
@@ -74,9 +75,25 @@ export default function EnergetskaSkupnostApp() {
           <img src="/favicon.png" alt="Logo" className="logo" />
           <h1>Energetska skupnost</h1>
         </div>
-        <div>
+        <div className="header-actions">
           <Bell />
-          <Users />
+          <div className="user-menu-wrapper">
+            <button
+              className="icon-button"
+              aria-haspopup="menu"
+              aria-expanded={isUserMenuOpen}
+              onClick={() => setIsUserMenuOpen((v) => !v)}
+            >
+              <Users />
+            </button>
+            {isUserMenuOpen && (
+              <div className="user-menu" role="menu">
+                <div className="user-menu-header">Mojca</div>
+                <button className="user-menu-item" role="menuitem">Nastavitve</button>
+                <button className="user-menu-item" role="menuitem">Odjava</button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
