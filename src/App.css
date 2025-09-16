@@ -138,6 +138,67 @@ header img.logo {
   position: relative;
 }
 
+.notif-wrapper {
+  position: relative;
+}
+
+.notif-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #ef4444;
+  color: white;
+  font-size: 10px;
+  line-height: 1;
+  padding: 3px 5px;
+  border-radius: 999px;
+  border: 2px solid #ffffff;
+}
+
+.notif-menu {
+  position: absolute;
+  right: 0;
+  top: 36px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-radius: 8px;
+  min-width: 220px;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.notif-item {
+  padding: 10px 12px;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.notif-action {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.notif-action:hover {
+  background: #f3f4f6;
+}
+
+.option-tile {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  padding: 14px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.option-tile:hover {
+  background: #f9fafb;
+}
 .user-menu {
   position: absolute;
   right: 0;

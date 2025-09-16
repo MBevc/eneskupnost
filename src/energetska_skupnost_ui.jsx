@@ -20,6 +20,8 @@ export default function EnergetskaSkupnostApp() {
   const [maxDelez, setMaxDelez] = useState(30);
   const [openMsg, setOpenMsg] = useState(null);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [hasRecommendations, setHasRecommendations] = useState(true);
 
   const avgPoraba =
     data.poraba.reduce((sum, p) => sum + p.value, 0) / data.poraba.length;
@@ -76,7 +78,36 @@ export default function EnergetskaSkupnostApp() {
           <h1>Energetska skupnost</h1>
         </div>
         <div className="header-actions">
-          <Bell />
+          <div className="notif-wrapper">
+            <button
+              className="icon-button"
+              aria-haspopup="menu"
+              aria-expanded={isNotifOpen}
+              aria-label="Obvestila"
+              onClick={() => setIsNotifOpen((v) => !v)}
+            >
+              <Bell />
+              {hasRecommendations && <span className="notif-badge">1</span>}
+            </button>
+            {isNotifOpen && (
+              <div className="notif-menu" role="menu">
+                <div className="notif-item">
+                  Imate nova priporočila za optimizacijo.
+                </div>
+                <button
+                  className="notif-action"
+                  role="menuitem"
+                  onClick={() => {
+                    setActiveTab("priporocila");
+                    setIsNotifOpen(false);
+                    setHasRecommendations(false);
+                  }}
+                >
+                  Odpri Priporočila
+                </button>
+              </div>
+            )}
+          </div>
           <div className="user-menu-wrapper">
             <button
               className="icon-button"
@@ -99,7 +130,7 @@ export default function EnergetskaSkupnostApp() {
 
       {/* Navigacija */}
       <nav>
-        {["pregled", "clani", "glasovanje", "obvestila"].map((tab) => (
+        {["pregled", "clani", "glasovanje", "obvestila", "priporocila"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -109,6 +140,7 @@ export default function EnergetskaSkupnostApp() {
             {tab === "clani" && "Člani"}
             {tab === "glasovanje" && "Glasovanje"}
             {tab === "obvestila" && "Obvestila"}
+            {tab === "priporocila" && "Priporočila"}
           </button>
         ))}
       </nav>
@@ -325,6 +357,20 @@ export default function EnergetskaSkupnostApp() {
                 )}
               </div>
             ))}
+          </div>
+        )}
+
+        {/* PRIPOROČILA */}
+        {activeTab === "priporocila" && (
+          <div className="card">
+            <h2>Priporočila</h2>
+            <p style={{ margin: "8px 0 16px", color: "#374151" }}>
+              Izberite način, s katerim želite prejeti priporočila.
+            </p>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+              <button className="option-tile">Vodena anketa</button>
+              <button className="option-tile">Prilagojen vmesnik</button>
+            </div>
           </div>
         )}
       </main>
