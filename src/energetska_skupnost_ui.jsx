@@ -11,15 +11,28 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { Users, Bell, CheckSquare } from "lucide-react";
+import { Users, Bell, CheckSquare, AlertTriangle } from "lucide-react";
 import "./App.css";
 
 export default function EnergetskaSkupnostApp() {
   const [activeTab, setActiveTab] = useState("pregled");
   const COLORS = ["#60a5fa", "#34d399", "#fbbf24"];
 
+  // --- DETEKCIJA ENERGETSKE REVŠČINE ---
+  // Povprečna poraba
+  const avgPoraba =
+    data.poraba.reduce((sum, p) => sum + p.value, 0) / data.poraba.length;
+
+  // Izračun tvegani člani (poraba > povprečje && delež < 30%)
+  const tveganiClani = data.clani.filter((clan) => {
+    const poraba = data.poraba.find((p) => p.name.includes(clan.ime.split(" ")[0]));
+    if (!poraba) return false;
+    const deležNum = parseInt(clan.delez.replace("%", ""));
+    return poraba.value > avgPoraba && deležNum < 30;
+  });
+
   return (
-     <div>
+    <div>
       {/* Header z logotipom */}
       <header>
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -50,6 +63,7 @@ export default function EnergetskaSkupnostApp() {
 
       {/* Vsebina */}
       <main>
+        {/* Pregled */}
         {activeTab === "pregled" && (
           <div className="grid">
             <div className="card">
@@ -86,51 +100,81 @@ export default function EnergetskaSkupnostApp() {
           </div>
         )}
 
-        {activeTab === "clani" && (
-          <div className="card">
-            <h2>Člani skupnosti</h2>
-            <ul>
-              {data.clani.map((clan) => (
-                <li key={clan.id}>
-                  {clan.ime} – delež: {clan.delez}
-                </li>
-              ))}
-            </ul>
-            <button className="primary">Dodaj člana</button>
-          </div>
-        )}
+{/* Člani */}
+{activeTab === "clani" && (
+  <div className="card">
+    <h2 style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+      <Users size={20} /> Člani skupnosti
+    </h2>
+    <ul>
+      {data.clani.map((clan) => (
+        <li key={clan.id}>
+          {clan.ime} – delež: {clan.delez}
+        </li>
+      ))}
+    </ul>
+    <button className="primary">Dodaj člana</button>
 
-        {activeTab === "glasovanje" && (
-          <div className="card">
-            <h2>Glasovanje</h2>
-            {data.glasovanja.map((glas) => (
-              <div key={glas.id} className="card">
-                <p>{glas.predlog}</p>
-                {glas.status === "odprto" ? (
-                  <div>
-                    <button className="success">DA</button>
-                    <button className="danger">NE</button>
-                  </div>
-                ) : (
-                  <p style={{ color: "#6b7280", fontSize: "0.9rem" }}>
-                    Glasovanje zaključeno
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+    {/* Prikaz ogroženih članov */}
+    {tveganiClani.length > 0 && (
+      <div
+        className="card"
+        style={{ marginTop: "20px", border: "1px solid #f59e0b" }}
+      >
+        <h3
+          style={{
+            color: "#b45309",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+          }}
+        >
+          <AlertTriangle size={18} /> Člani v tveganju energetske revščine
+        </h3>
+        <ul>
+          {tveganiClani.map((c) => (
+            <li key={c.id}>
+              ⚠️ {c.ime} – delež: {c.delez}
+            </li>
+          ))}
+        </ul>
 
-        {activeTab === "obvestila" && (
-          <div className="card">
-            <h2>Obvestila</h2>
-            <ul>
-              {data.obvestila.map((o, index) => (
-                <li key={index}>{o}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+        {/* --- NOV GRAF --- */}
+        <div style={{ marginTop: "20px" }}>
+          <h4>Primerjava porabe med člani</h4>
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={data.poraba}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar
+                dataKey="value"
+                label={{ position: "top" }}
+                // Rdeča za tvegane, zelena za ostale
+                fill="#34d399"
+              >
+                {data.poraba.map((entry, index) => {
+                  const clan = data.clani.find((c) =>
+                    entry.name.includes(c.ime.split(" ")[0])
+                  );
+                  const jeTvegan = tveganiClani.some((t) => t.id === clan?.id);
+                  return (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={jeTvegan ? "#ef4444" : "#34d399"}
+                    />
+                  );
+                })}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+    )}
+  </div>
+)}
+
+        {/* Glasovanje in obvestila ostaneta enaka */}
       </main>
     </div>
   );

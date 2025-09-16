@@ -1,34 +1,39 @@
 {
   "poraba": [
-    { "name": "Janez", "value": 30 },
-    { "name": "Maja", "value": 45 },
-    { "name": "Tina", "value": 25 }
+    { "name": "Ana", "value": 420 },
+    { "name": "Marko", "value": 280 },
+    { "name": "Petra", "value": 500 },
+    { "name": "Luka", "value": 350 },
+    { "name": "Maja", "value": 600 },
+    { "name": "Boris", "value": 150 },
+    { "name": "Nina", "value": 700 },
+    { "name": "Žan", "value": 260 },
+    { "name": "Tina", "value": 480 },
+    { "name": "Igor", "value": 320 }
   ],
   "proizvodnja": [
-    { "name": "Sončna elektrarna", "kWh": 120 },
-    { "name": "Vetrnica", "kWh": 80 },
-    { "name": "Shramba", "kWh": 40 }
+    { "name": "Sončne celice", "kWh": 400 },
+    { "name": "Vetrnica", "kWh": 250 },
+    { "name": "Skupnostni vir", "kWh": 150 }
   ],
   "clani": [
-    { "id": 1, "ime": "Janez Novak", "delez": "30%" },
-    { "id": 2, "ime": "Maja Kovač", "delez": "45%" },
-    { "id": 3, "ime": "Tina Zupan", "delez": "25%" }
+    { "id": 1, "ime": "Ana Novak", "delez": "20%" },
+    { "id": 2, "ime": "Marko Kralj", "delez": "15%" },
+    { "id": 3, "ime": "Petra Horvat", "delez": "10%" },
+    { "id": 4, "ime": "Luka Zupan", "delez": "12%" },
+    { "id": 5, "ime": "Maja Vidmar", "delez": "8%" },
+    { "id": 6, "ime": "Boris Mlakar", "delez": "7%" },
+    { "id": 7, "ime": "Nina Kovač", "delez": "5%" },
+    { "id": 8, "ime": "Žan Hočevar", "delez": "10%" },
+    { "id": 9, "ime": "Tina Bizjak", "delez": "8%" },
+    { "id": 10, "ime": "Igor Dolenc", "delez": "5%" }
   ],
   "glasovanja": [
-    {
-      "id": 1,
-      "predlog": "Ali podprete investicijo v novo sončno elektrarno?",
-      "status": "odprto"
-    },
-    {
-      "id": 2,
-      "predlog": "Uvedba skupne shrambe energije",
-      "status": "zaključeno"
-    }
+    { "id": 1, "tema": "Naložba v nove sončne panele", "status": "Odprto" },
+    { "id": 2, "tema": "Vzdrževanje skupnostne vetrnice", "status": "Zaključeno" }
   ],
   "obvestila": [
-    "Naslednji sestanek: 15. marec 2025",
-    "Nova sončna elektrarna je začela obratovati",
-    "Obvestilo: odprto glasovanje o novi investiciji"
+    { "id": 1, "sporocilo": "Sestanek v sredo ob 18:00." },
+    { "id": 2, "sporocilo": "Na voljo so novi rezultati meritev." }
   ]
 }

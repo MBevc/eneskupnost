@@ -8,6 +8,8 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f9fafb; /* svetlo siva */
   color: #1f2937; /* temno siva */
+  font-size: 16px; /* večji globalni font */
+  line-height: 1.5;
 }
 
 /* Header */
@@ -21,14 +23,14 @@ header {
 }
 
 header h1 {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
 }
 
 /* Navigacija */
 nav {
   display: flex;
-  gap: 24px;
+  gap: 32px;
   padding: 12px 24px;
   border-bottom: 1px solid #e5e7eb;
   background-color: #ffffff;
@@ -44,7 +46,7 @@ nav button {
 }
 
 nav button.active {
-  border-bottom: 2px solid #000000;
+  border: 3px solid #91c83c;
   font-weight: bold;
   color: #111827;
 }
