@@ -12,9 +12,9 @@
     { "name": "Igor", "value": 320 }
   ],
   "proizvodnja": [
-    { "name": "Sončne celice", "kWh": 400 },
-    { "name": "Vetrnica", "kWh": 250 },
-    { "name": "Skupnostni vir", "kWh": 150 }
+    { "name": "Sončne celice", "kWh": 1337 },
+    { "name": "Vetrnica", "kWh": 576 },
+    { "name": "Skupnostni vir", "kWh": 837 }
   ],
   "clani": [
     { "id": 1, "ime": "Ana Novak", "delez": "20%" },
@@ -28,12 +28,37 @@
     { "id": 9, "ime": "Tina Bizjak", "delez": "8%" },
     { "id": 10, "ime": "Igor Dolenc", "delez": "5%" }
   ],
-  "glasovanja": [
-    { "id": 1, "tema": "Naložba v nove sončne panele", "status": "Odprto" },
-    { "id": 2, "tema": "Vzdrževanje skupnostne vetrnice", "status": "Zaključeno" }
+"obvestila": [
+    {
+      "title": "Servis sončne elektrarne",
+      "content": "V sredo, 28. 8. 2025, bo med 9. in 13. uro servis sončne elektrarne. V tem času lahko pride do krajših izpadov proizvodnje."
+    },
+    {
+      "title": "Nov član skupnosti",
+      "content": "Dobrodošel novi član energetske skupnosti: Matej Erjavec! S svojimi 5 kW sončne elektrarne bo povečal našo proizvodnjo za približno 6000 kWh letno."
+    },
+    {
+      "title": "Obvestilo o stroških",
+      "content": "Opomnik: do 30. 9. 2025 je potrebno poravnati prispevke za vzdrževanje sistema. Računi so poslani po elektronski pošti."
+    },
+    {
+      "title": "Predavanje o energetski učinkovitosti",
+      "content": "V petek, 12. 9. 2025, ob 18:00 bo v dvorani kulturnega doma predavanje o ukrepih za zmanjšanje energetske porabe v gospodinjstvih."
+    }
   ],
-  "obvestila": [
-    { "id": 1, "sporocilo": "Sestanek v sredo ob 18:00." },
-    { "id": 2, "sporocilo": "Na voljo so novi rezultati meritev." }
+  "glasovanja": [
+    {
+      "naslov": "Novi pravilnik o delitvi prihrankov",
+      "rezultati": { "za": 68, "proti": 22, "vzdrzani": 10 }
+    },
+    {
+      "naslov": "Nakup skupne baterije",
+      "rezultati": { "za": 81, "proti": 15, "vzdrzani": 4 }
+    },
+    {
+      "naslov": "Sprejem novega člana",
+      "rezultati": { "za": 92, "proti": 5, "vzdrzani": 3 }
+    }
   ]
 }
+

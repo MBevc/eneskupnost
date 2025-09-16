@@ -11,13 +11,14 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { Users, Bell, AlertTriangle } from "lucide-react";
+import { Users, Bell, AlertTriangle, Check, X } from "lucide-react";
 import "./App.css";
 
 export default function EnergetskaSkupnostApp() {
   const [activeTab, setActiveTab] = useState("pregled");
   const [porabaMultiplier, setPorabaMultiplier] = useState(1.2);
   const [maxDelez, setMaxDelez] = useState(30);
+  const [openMsg, setOpenMsg] = useState(null);
 
   const avgPoraba =
     data.poraba.reduce((sum, p) => sum + p.value, 0) / data.poraba.length;
@@ -31,21 +32,21 @@ export default function EnergetskaSkupnostApp() {
     return poraba.value > avgPoraba * porabaMultiplier && deležNum < maxDelez;
   });
 
-  // globalni maksimum za grafe (Pregled)
   const maxValue = Math.max(
     ...data.poraba.map((p) => p.value),
     ...data.proizvodnja.map((p) => p.kWh)
   );
 
-  // barvni gradient
+  const totalPoraba = data.poraba.reduce((s, p) => s + p.value, 0);
+  const totalProizvodnja = data.proizvodnja.reduce((s, p) => s + p.kWh, 0);
+
   const getRiskColor = (value) => {
-    if (value < avgPoraba * 0.9) return "#34d399"; // zelena
-    if (value < avgPoraba * 1.1) return "#facc15"; // rumena
-    if (value < avgPoraba * 1.3) return "#fb923c"; // oranžna
-    return "#ef4444"; // rdeča
+    if (value < avgPoraba * 0.9) return "#34d399";
+    if (value < avgPoraba * 1.1) return "#facc15";
+    if (value < avgPoraba * 1.3) return "#fb923c";
+    return "#ef4444";
   };
 
-  // Tooltip renderer za tortni graf
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const entry = payload[0].payload;
@@ -53,14 +54,7 @@ export default function EnergetskaSkupnostApp() {
         entry.name.includes(c.ime.split(" ")[0])
       );
       return (
-        <div
-          style={{
-            background: "#fff",
-            border: "1px solid #ccc",
-            padding: "8px",
-            borderRadius: "6px",
-          }}
-        >
+        <div className="tooltip-box">
           <p>
             <b>{clan.ime}</b>
           </p>
@@ -102,7 +96,6 @@ export default function EnergetskaSkupnostApp() {
         ))}
       </nav>
 
-      {/* Vsebina */}
       <main>
         {/* PREGLED */}
         {activeTab === "pregled" && (
@@ -133,21 +126,22 @@ export default function EnergetskaSkupnostApp() {
               </div>
             </div>
 
-            {/* NOV GRAF: Neto bilanca */}
+            {/* Neto bilanca */}
             <div className="card" style={{ marginTop: "20px" }}>
               <h2>Neto bilanca skupnosti</h2>
-              <ResponsiveContainer width="100%" height={250}>
+              <ResponsiveContainer width="100%" height={200}>
                 <BarChart
+                  layout="vertical"
                   data={[
                     {
                       name: "Skupaj",
-                      Poraba: -data.poraba.reduce((s, p) => s + p.value, 0),
-                      Proizvodnja: data.proizvodnja.reduce((s, p) => s + p.kWh, 0),
+                      Poraba: totalPoraba,
+                      Proizvodnja: totalProizvodnja,
                     },
                   ]}
                 >
-                  <XAxis dataKey="name" />
-                  <YAxis />
+                  <XAxis type="number" />
+                  <YAxis type="category" dataKey="name" />
                   <Tooltip />
                   <Bar dataKey="Poraba" fill="#3b82f6" />
                   <Bar dataKey="Proizvodnja" fill="#34d399" />
@@ -271,7 +265,51 @@ export default function EnergetskaSkupnostApp() {
             </div>
           </div>
         )}
- 
+   {/* GLASOVANJE */}
+        {activeTab === "glasovanje" && (
+          <div className="card">
+            <h2>Glasovanje</h2>
+            <p>Ali se strinjate z novim pravilnikom o delitvi prihrankov?</p>
+            <div style={{ display: "flex", gap: "12px", margin: "12px 0" }}>
+              <button className="vote-btn yes">
+                <Check /> ZA
+              </button>
+              <button className="vote-btn no">
+                <X /> PROTI
+              </button>
+              <button className="vote-btn neutral">Vzdržan</button>
+            </div>
+            <h3>Pretekla glasovanja</h3>
+            <ul>
+              <li>
+                Sončna elektrarna 2024: <b>ZA 78%</b>, PROTI 15%, VZDRŽANI 7%
+              </li>
+              <li>
+                Novi član: <b>ZA 92%</b>, PROTI 5%, VZDRŽANI 3%
+              </li>
+            </ul>
+          </div>
+        )}
+
+        {/* OBVESTILA */}
+        {activeTab === "obvestila" && (
+          <div className="card">
+            <h2>Obvestila</h2>
+            {data.obvestila.map((msg, i) => (
+              <div key={i} className="msg">
+                <div
+                  className="msg-header"
+                  onClick={() => setOpenMsg(openMsg === i ? null : i)}
+                >
+                  <b>{msg.title}</b> <span>{openMsg === i ? "▲" : "▼"}</span>
+                </div>
+                {openMsg === i && (
+                  <div className="msg-body">{msg.content}</div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );
