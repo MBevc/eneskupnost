@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-// OpenAI integration (WARNING: exposing keys in frontend is insecure; use only for demo)
-// Use backend API; do not expose keys in frontend
+// Local Ollama integration - runs on bare metal Windows
 
 const SYSTEM_PROMPT = `Ti si svetovalec za energetske skupnosti, specializiran za električno energijo.
 Tvoj cilj je pomoč uporabnikom z nizkocenovnimi rešitvami in izboljšanjem energetske učinkovitosti.
