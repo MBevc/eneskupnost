@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  mistral:
+    image: ghcr.io/ggerganov/llama.cpp:server-cublas
+    container_name: mistral-7b-local
+    command: [
+      "--model", "/models/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+      "--host", "0.0.0.0",
+      "--port", "8080",
+      "-c", "4096",
+      "--api",
+      "--parallel", "2",
+      "--n-gpu-layers", "35"
+    ]
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./models:/models
+    restart: unless-stopped
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: ["gpu"]
+

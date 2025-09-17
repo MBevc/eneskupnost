@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import { Users, Bell, AlertTriangle, Check, X } from "lucide-react";
 import EnergySurvey from "./EnergySurvey";
+import EnergyChatBot from "./EnergyChatBot";
 import "./App.css";
 
 export default function EnergetskaSkupnostApp() {
@@ -418,8 +419,8 @@ export default function EnergetskaSkupnostApp() {
               </div>
             )}
             {pripMode === "vmesnik" && (
-              <div style={{ marginTop: "12px", color: "#374151" }}>
-                Prilagojen vmesnik bo na voljo kmalu.
+              <div style={{ marginTop: "12px" }}>
+                <EnergyChatBot />
                 <div style={{ marginTop: "12px" }}>
                   <button onClick={() => setPripMode(null)} className="vote-btn neutral">Nazaj na izbiro</button>
                 </div>
