@@ -1,53 +1,43 @@
-Mistral 7B Instruct (Q4_K_M) - Local Docker Setup (Windows-friendly)
+Mistral 7B Instruct - Local Docker Setup with Ollama (Windows-friendly)
 
 Requirements
 - Docker Desktop for Windows
 - PowerShell
 
 Steps
-1) Download the model (one-time):
-   - Open PowerShell in this folder and run:
-     powershell -ExecutionPolicy Bypass -File .\scripts\download-model.ps1
-
-   This saves the file to `models/mistral-7b-instruct-v0.2.Q4_K_M.gguf`.
-
-2) Start the model server:
+1) Start Ollama (with GPU if available):
    - docker compose up -d
 
-   This launches llama.cpp server on port 8080.
+   This launches Ollama on port 11434 and pulls `mistral:instruct`.
 
-3) Test the API:
-   - curl http://localhost:8080/health
-   - curl -s -X POST http://localhost:8080/v1/chat/completions ^
-       -H "Content-Type: application/json" ^
-       -d '{
-         "model": "mistral-7b-instruct-v0.2.Q4_K_M.gguf",
-         "messages": [
-           {"role":"system","content":"You are a helpful assistant."},
-           {"role":"user","content":"Hello!"}
-         ]
-       }'
+2) Test the API:
+   - curl http://localhost:11434/api/tags
+   - curl -s -X POST http://localhost:11434/api/chat -H "Content-Type: application/json" -d '{
+       "model": "mistral:instruct",
+       "messages": [
+         {"role":"system","content":"You are a helpful assistant."},
+         {"role":"user","content":"Hello!"}
+       ]
+     }'
 
 Integrating with the React app
-- The server is OpenAI-compatible. You can call http://localhost:8080/v1/chat/completions.
+- The server exposes an Ollama API. Call http://localhost:11434/api/chat.
 - Example fetch in the browser:
 
 ```js
-const reply = await fetch('http://localhost:8080/v1/chat/completions', {
+const reply = await fetch('http://localhost:11434/api/chat', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
-    model: 'mistral-7b-instruct-v0.2.Q4_K_M.gguf',
+    model: 'mistral:instruct',
     messages: [
       { role: 'system', content: 'Ti si svetovalec za energetske skupnosti...' },
       { role: 'user', content: 'Kako zmanjšam račun?' }
-    ],
-    temperature: 0.3,
-    max_tokens: 220,
+    ]
   })
 });
 const data = await reply.json();
-console.log(data.choices[0].message.content);
+console.log(data.message.content);
 ```
 
 Notes

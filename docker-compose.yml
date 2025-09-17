@@ -1,22 +1,13 @@
 version: "3.9"
 services:
-  mistral:
-    image: ghcr.io/ggerganov/llama.cpp:server-cublas
-    container_name: mistral-7b-local
-    command: [
-      "--model", "/models/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
-      "--host", "0.0.0.0",
-      "--port", "8080",
-      "-c", "4096",
-      "--api",
-      "--parallel", "2",
-      "--n-gpu-layers", "35"
-    ]
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./models:/models
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
     restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
     deploy:
@@ -24,4 +15,21 @@ services:
         reservations:
           devices:
             - capabilities: ["gpu"]
+    # Optional: pre-pull model on startup (compose v2.20+ supports healthcheck/startup order)
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  ollama-init:
+    image: ollama/ollama:latest
+    depends_on:
+      ollama:
+        condition: service_healthy
+    volumes:
+      - ollama:/root/.ollama
+    entrypoint: ["bash", "-lc", "ollama pull mistral:instruct || true"]
+    restart: "no"
+volumes:
+  ollama:
 
