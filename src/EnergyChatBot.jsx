@@ -36,25 +36,27 @@ const EnergyChatBot = () => {
     const userMsg = { role: "user", content: input };
     setMessages((prev) => [...prev, userMsg]);
 
-    // Call OpenAI
+    // Call local Ollama
     try {
       setIsLoading(true);
-      const apiBase = process.env.REACT_APP_API_BASE || "http://localhost:4000";
+      const apiBase = process.env.REACT_APP_OLLAMA_API || "http://localhost:11434";
       const response = await fetch(`${apiBase}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          model: "mistral:instruct",
           messages: [
+            { role: "system", content: SYSTEM_PROMPT },
             ...messages.map((m) => ({ role: m.role === "bot" ? "assistant" : "user", content: m.content })),
             { role: "user", content: input },
-          ],
+          ]
         }),
       });
 
       const data = await response.json();
-      const content = data?.content?.trim() || "Oprostite, trenutno ne morem odgovoriti.";
+      const content = data?.message?.content?.trim() || "Oprostite, trenutno ne morem odgovoriti.";
       setMessages((prev) => [...prev, { role: "bot", content }]);
     } catch (err) {
       setMessages((prev) => [...prev, { role: "bot", content: "Prišlo je do napake pri povezavi. Poskusite znova." }]);
