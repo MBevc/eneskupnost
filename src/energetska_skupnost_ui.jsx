@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import data from "./data.json";
+
 import {
   PieChart,
   Pie,
@@ -200,7 +201,7 @@ export default function EnergetskaSkupnostApp() {
                     <XAxis dataKey="name" />
                     <YAxis domain={[0, maxValue]} />
                     <Tooltip />
-                    <Bar dataKey="kWh" fill="#34d399" />
+                    <Bar dataKey="kWh" fill="#91c83c" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -224,7 +225,7 @@ export default function EnergetskaSkupnostApp() {
                   <YAxis type="category" dataKey="name" />
                   <Tooltip />
                   <Bar dataKey="Poraba" fill="#3b82f6" />
-                  <Bar dataKey="Proizvodnja" fill="#34d399" />
+                  <Bar dataKey="Proizvodnja" fill="#91c83c" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -259,7 +260,9 @@ export default function EnergetskaSkupnostApp() {
               </div>
 
               {/* Slider + legenda */}
+              
               <div className="slider-panel">
+                {/*
                 <h4>Nastavitve praga</h4>
                 <label>
                   Prag porabe (x povprečje): {porabaMultiplier.toFixed(1)}
@@ -282,10 +285,10 @@ export default function EnergetskaSkupnostApp() {
                   value={maxDelez}
                   onChange={(e) => setMaxDelez(parseInt(e.target.value))}
                 />
-
+                */}
                 {/* Legenda zdaj pod sliderjem */}
                 <div style={{ marginTop: "20px" }}>
-                  <h4>Legenda tveganja</h4>
+                  <h4>Legenda tveganja za energetsko revščino</h4>
                   <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                     <span style={{ color: "#34d399" }}>● nizka</span>
                     <span style={{ color: "#facc15" }}>● srednja</span>
