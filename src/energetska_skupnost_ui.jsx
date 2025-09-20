@@ -151,7 +151,7 @@ export default function EnergetskaSkupnostApp() {
             </button>
             {isUserMenuOpen && (
               <div className="user-menu" role="menu">
-                <div className="user-menu-header">Mojca</div>
+                <div className="user-menu-header">Nina Kovač</div>
                 <button className="user-menu-item" role="menuitem">Nastavitve</button>
                 <button className="user-menu-item" role="menuitem">Odjava</button>
               </div>
@@ -336,7 +336,7 @@ export default function EnergetskaSkupnostApp() {
                           <td>
                             {jeTvegan && (
                               <span style={{ color: "#ef4444" }}>
-                                <AlertTriangle size={16} /> Tvegan
+                                <AlertTriangle size={16} /> Povečano tveganje za energetsko revščino
                               </span>
                             )}
                           </td>
